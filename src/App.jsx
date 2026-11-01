@@ -165,7 +165,7 @@ function AppContent({ initialCliData, theme, onThemeChange }) {
 
   useEffect(() => {
     const name = currentFileName || "Nowy dokument";
-    const title = `${name} - Markdown Editor`;
+    const title = `${name} - markdown-viewerPsyche1`;
     document.title = title;
     if (window.__TAURI_INTERNALS__) {
       import("@tauri-apps/api/window").then(({ getCurrentWindow }) => {

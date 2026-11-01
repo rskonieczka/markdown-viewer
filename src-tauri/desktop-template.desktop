@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Markdown Editor
-Comment=A modern Markdown editor
-Exec=markdown-editor %f
-Icon=markdown-editor
+Name=markdown-viewerPsyche1
+Comment=markdown-viewerPsyche1 - Markdown viewer
+Exec=markdown-viewerpsyche1 %f
+Icon=markdown-viewerpsyche1
 Terminal=false
 Type=Application
 Categories=Office;TextEditor;
