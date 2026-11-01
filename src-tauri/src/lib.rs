@@ -18,18 +18,12 @@ fn get_cli_file(state: tauri::State<CliState>) -> Option<CliFileData> {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let args: Vec<String> = std::env::args().collect();
-    let mut debug = format!("args({}):", args.len());
-    for a in &args {
-        debug.push_str(&format!(" [{}]", a));
-    }
 
     let mut file_data: Option<CliFileData> = None;
     for arg in args.iter().skip(1) {
         if !arg.starts_with('-') {
             let path = std::path::PathBuf::from(arg);
-            let exists = path.exists();
-            debug.push_str(&format!("\ntry: {} exists={}", arg, exists));
-            if exists {
+            if path.exists() {
                 let abs = std::fs::canonicalize(&path).unwrap_or(path.clone());
                 let abs_str = abs.to_string_lossy().to_string();
                 let name = abs.file_name()
@@ -37,23 +31,19 @@ pub fn run() {
                     .unwrap_or_default();
                 match std::fs::read_to_string(&abs) {
                     Ok(content) => {
-                        debug.push_str(&format!("\nread OK: {} bytes", content.len()));
                         file_data = Some(CliFileData {
                             path: abs_str,
                             name,
                             content,
                         });
                     }
-                    Err(e) => {
-                        debug.push_str(&format!("\nread ERR: {}", e));
-                    }
+                    Err(e) => eprintln!("Failed to read {}: {}", abs_str, e),
                 }
             }
             break;
         }
     }
 
-    let _ = std::fs::write("/tmp/md-editor-debug.log", &debug);
 
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
