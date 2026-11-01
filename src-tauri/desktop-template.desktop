@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=markdown-viewerPsyche1
-Comment=markdown-viewerPsyche1 - Markdown viewer
-Exec=markdown-viewerpsyche1 %f
-Icon=markdown-viewerpsyche1
+Name=markdown-viewer
+Comment=markdown-viewer - Markdown viewer
+Exec=markdown-viewer %f
+Icon=markdown-viewer
 Terminal=false
 Type=Application
 Categories=Office;TextEditor;

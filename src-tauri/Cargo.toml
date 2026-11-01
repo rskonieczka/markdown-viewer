@@ -1,12 +1,12 @@
 [package]
-name = "markdown-viewerpsyche1"
+name = "markdown-viewer"
 version = "1.0.0"
-description = "markdown-viewerPsyche1"
-authors = ["markdown-viewerPsyche1 Team"]
+description = "markdown-viewer"
+authors = ["markdown-viewer Team"]
 edition = "2021"
 
 [lib]
-name = "markdown_viewer_psyche1_lib"
+name = "markdown_viewer_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]

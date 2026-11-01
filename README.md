@@ -35,7 +35,7 @@ Rendered content supports the elements configured in the viewer pipeline, includ
 The Tauri backend reads the first non-flag command-line argument and, if it points to an existing file, passes its absolute path, file name and content to the frontend. In practice this allows launching the packaged application with a file path, for example:
 
 ```bash
-markdown-viewerpsyche1 document.md
+markdown-viewer document.md
 ```
 
 The Tauri bundle also declares file associations for `.md`, `.markdown` and `.txt`, so opening those files from the operating system can route them into the viewer. When a file path is available, the application monitors it with the native file watching mechanism and reloads the document after external changes.
@@ -57,15 +57,15 @@ The application uses the native OS WebView (WebKitGTK on Linux, WebView2 on Wind
 
 | System | File | Link |
 |--------|------|------|
-| Windows (installer) | `.exe` | [Download](https://github.com/rskonieczka/markdown-editor/releases/latest/download/markdown-viewerPsyche1_1.0.0_x64-setup.exe) |
-| Windows (MSI) | `.msi` | [Download](https://github.com/rskonieczka/markdown-editor/releases/latest/download/markdown-viewerPsyche1_1.0.0_x64_en-US.msi) |
-| Linux (Debian/Ubuntu) | `.deb` | [Download](https://github.com/rskonieczka/markdown-editor/releases/latest/download/markdown-viewerPsyche1_1.0.0_amd64.deb) |
-| Linux (universal) | `.AppImage` | [Download](https://github.com/rskonieczka/markdown-editor/releases/latest/download/markdown-viewerPsyche1_1.0.0_amd64.AppImage) |
+| Windows (installer) | `.exe` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.0.0_x64-setup.exe) |
+| Windows (MSI) | `.msi` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.0.0_x64_en-US.msi) |
+| Linux (Debian/Ubuntu) | `.deb` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.0.0_amd64.deb) |
+| Linux (universal) | `.AppImage` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.0.0_amd64.AppImage) |
 
 ## Features
 
 - **Read-only Markdown rendering** - display formatted Markdown without edit mode
-- **CLI file input** - open a file by passing its path: `markdown-viewerpsyche1 file.md`
+- **CLI file input** - open a file by passing its path: `markdown-viewer file.md`
 - **OS file associations** - packaged app declares `.md`, `.markdown` and `.txt`
 - **File watcher** - automatic reload on external changes when a file path is available
 - **Zoom** - view scaling 50-200% persisted in `localStorage`
@@ -102,7 +102,7 @@ npm install
 cargo tauri build
 
 # Typical output paths:
-# Native binary -> src-tauri/target/release/markdown-viewerpsyche1
+# Native binary -> src-tauri/target/release/markdown-viewer
 # Linux .deb    -> src-tauri/target/release/bundle/deb/*.deb
 # Linux .rpm    -> src-tauri/target/release/bundle/rpm/*.rpm
 # Linux AppImage -> src-tauri/target/release/bundle/appimage/*.AppImage

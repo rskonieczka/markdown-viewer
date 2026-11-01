@@ -1,4 +1,4 @@
-# Budowanie markdown-viewerPsyche1 na Windows
+# Budowanie markdown-viewer na Windows
 
 ## Wymagania wstepne
 
@@ -50,10 +50,10 @@ cargo tauri build --bundles msi,nsis
 Pliki instalacyjne znajdziesz w:
 
 - **MSI (Windows Installer):**
-  `src-tauri/target/release/bundle/msi/markdown-viewerPsyche1_1.0.0_x64_en-US.msi`
+  `src-tauri/target/release/bundle/msi/markdown-viewer_1.0.0_x64_en-US.msi`
 
 - **EXE (NSIS setup wizard):**
-  `src-tauri/target/release/bundle/nsis/markdown-viewerPsyche1_1.0.0_x64-setup.exe`
+  `src-tauri/target/release/bundle/nsis/markdown-viewer_1.0.0_x64-setup.exe`
 
 ## Uwagi
 
