@@ -10,6 +10,8 @@ const md = new MarkdownIt({
   typographer: true,
 });
 md.use(markdownItTaskLists, { enabled: true });
+// Only autolink text with a protocol or "www." - otherwise abbreviations like "m.in" become links.
+md.linkify.set({ fuzzyLink: false });
 
 const ZOOM_STORAGE_KEY = "md-editor-zoom";
 const FONT_STORAGE_KEY = "md-editor-font";
