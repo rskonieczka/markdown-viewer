@@ -13,6 +13,7 @@ md.use(markdownItTaskLists, { enabled: true });
 
 const ZOOM_STORAGE_KEY = "md-editor-zoom";
 const FONT_STORAGE_KEY = "md-editor-font";
+const FONT_SIZE_STORAGE_KEY = "md-editor-font-size";
 const THEME_STORAGE_KEY = "md-editor-theme";
 
 function getStoredTheme() {
@@ -160,6 +161,10 @@ function AppContent({ initialCliData, theme, onThemeChange }) {
     const saved = localStorage.getItem(FONT_STORAGE_KEY);
     return saved || "system-ui";
   });
+  const [fontSize, setFontSize] = useState(() => {
+    const saved = localStorage.getItem(FONT_SIZE_STORAGE_KEY);
+    return saved ? Number(saved) : 16;
+  });
   const [contextMenuPosition, setContextMenuPosition] = useState(null);
   const currentContentRef = useRef(initialCliData ? initialCliData.content : "");
 
@@ -197,26 +202,28 @@ function AppContent({ initialCliData, theme, onThemeChange }) {
 
     let unwatchFn = null;
     let cancelled = false;
+    let reloadTimer = null;
 
     (async () => {
       try {
         unwatchFn = await tauriFs.watchImmediate(
           currentFilePath,
-          async (event) => {
+          (event) => {
             if (cancelled) return;
             const evType = event.type;
-            const isModify = (typeof evType === "object" && "modify" in evType)
-              || evType === "modify"
-              || (typeof evType === "object" && "access" in evType)
-              || (Array.isArray(event.paths) && event.paths.length > 0);
-            if (!isModify) return;
-            try {
-              const content = await tauriFs.readTextFile(currentFilePath);
-              if (cancelled || content === currentContentRef.current) return;
-              setEditorContent(content);
-            } catch (err) {
-              console.warn("File reload failed:", err);
-            }
+            // Access events fire on every read (including our own) - ignore them.
+            if (typeof evType === "object" && evType && "access" in evType) return;
+            // Editors emit bursts of events per save; reload once after they settle.
+            clearTimeout(reloadTimer);
+            reloadTimer = setTimeout(async () => {
+              try {
+                const content = await tauriFs.readTextFile(currentFilePath);
+                if (cancelled || content === currentContentRef.current) return;
+                setEditorContent(content);
+              } catch (err) {
+                console.warn("File reload failed:", err);
+              }
+            }, 150);
           },
         );
       } catch (err) {
@@ -226,6 +233,7 @@ function AppContent({ initialCliData, theme, onThemeChange }) {
 
     return () => {
       cancelled = true;
+      clearTimeout(reloadTimer);
       if (unwatchFn) unwatchFn();
     };
   }, [currentFilePath, setEditorContent]);
@@ -299,6 +307,8 @@ function AppContent({ initialCliData, theme, onThemeChange }) {
           onZoomChange={(v) => { setZoom(v); localStorage.setItem(ZOOM_STORAGE_KEY, v); }}
           fontFamily={fontFamily}
           onFontChange={(font) => { setFontFamily(font); localStorage.setItem(FONT_STORAGE_KEY, font); }}
+          fontSize={fontSize}
+          onFontSizeChange={(v) => { setFontSize(v); localStorage.setItem(FONT_SIZE_STORAGE_KEY, v); }}
           theme={theme}
           onThemeChange={onThemeChange}
           position={contextMenuPosition}
@@ -309,6 +319,7 @@ function AppContent({ initialCliData, theme, onThemeChange }) {
         editor={editor}
         zoom={zoom}
         fontFamily={fontFamily}
+        fontSize={fontSize}
         onContextMenu={handleContextMenu}
       />
     </div>

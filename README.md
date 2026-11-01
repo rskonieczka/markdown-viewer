@@ -23,6 +23,7 @@ A native, lightweight Markdown viewer built with Tauri 2 (Rust + React).
 
 Markdown Viewer is a desktop application for displaying Markdown files as formatted documents. The current version is read-only: it renders content without editing, saving or export actions.
 
+
 ### Document Rendering
 
 The application converts Markdown to HTML with `markdown-it` and displays the result through TipTap/ProseMirror in read-only mode. This keeps the rendered document layout consistent while removing document editing from the UI.

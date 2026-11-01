@@ -77,7 +77,6 @@ body {
   outline: none;
   min-height: 100%;
   padding: 2rem 3rem;
-  font-size: 1rem;
   line-height: 1.75;
   color: var(--color-fg-default);
   background-color: var(--color-canvas-default);
@@ -292,4 +291,8 @@ body {
   float: left;
   height: 0;
   pointer-events: none;
+}
+
+.tiptap a[href] {
+  cursor: pointer;
 }

@@ -5,6 +5,8 @@ export default function Toolbar({
   onZoomChange,
   fontFamily,
   onFontChange,
+  fontSize,
+  onFontSizeChange,
   theme,
   onThemeChange,
   position,
@@ -71,6 +73,20 @@ export default function Toolbar({
             <option value="Courier New">Courier</option>
             <option value="JetBrains Mono">JetBrains</option>
             <option value="Fira Code">Fira Code</option>
+          </select>
+        </label>
+
+        <label className="block space-y-1">
+          <span className={labelClassName}>Rozmiar fonta</span>
+          <select
+            value={fontSize}
+            onChange={(e) => onFontSizeChange(Number(e.target.value))}
+            title="Rozmiar fonta"
+            className={selectClassName}
+          >
+            {[12, 14, 16, 18, 20, 24].map((v) => (
+              <option key={v} value={v}>{v}px</option>
+            ))}
           </select>
         </label>
       </div>

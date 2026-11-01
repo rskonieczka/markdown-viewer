@@ -26,6 +26,7 @@
     "core:event:default",
     "core:window:allow-set-title",
     "fs:allow-watch",
-    "fs:allow-unwatch"
+    "fs:allow-unwatch",
+    "opener:allow-open-url"
   ]
 }
