@@ -2,7 +2,7 @@
 
 A native, lightweight Markdown viewer built with Tauri 2 (Rust + React).
 
-> Current mode: read-only viewer with zoom and font controls.
+> Current version: 1.1.0 - read-only viewer with zoom, font, font size and theme controls.
 
 ![Markdown Viewer](markdowneditor-view.png)
 
@@ -18,6 +18,7 @@ A native, lightweight Markdown viewer built with Tauri 2 (Rust + React).
 - [Running (dev)](#running-dev)
 - [Building](#building)
 - [Tech Stack](#tech-stack)
+- [Changelog](#changelog)
 
 ## Description
 
@@ -26,9 +27,11 @@ Markdown Viewer is a desktop application for displaying Markdown files as format
 
 ### Document Rendering
 
-The application converts Markdown to HTML with `markdown-it` and displays the result through TipTap/ProseMirror in read-only mode. This keeps the rendered document layout consistent while removing document editing from the UI.
+The application converts Markdown to HTML with `markdown-it` and inserts the result directly into the document view. No editor engine is involved, which keeps startup fast and the bundle small.
 
 Rendered content supports the elements configured in the viewer pipeline, including headings H1-H6, bold, italic, strikethrough, inline code, code blocks, bullet and ordered lists, checklist (`- [ ]` / `- [x]`), blockquotes, links and tables.
+
+Links (`http://`, `https://`, `mailto:`, `tel:`) are clickable and open in the system default browser or application. Anchor links (`#section`) scroll within the document.
 
 ### File Input
 
@@ -44,10 +47,14 @@ If the application starts without a file, it opens an empty viewer window.
 
 ### Interface
 
-The toolbar contains only two controls:
+Settings are available from the context menu (right-click on the document):
 
-- zoom selector in the range 50-200%
-- font family selector persisted in `localStorage`
+- zoom in the range 50-200%
+- font family
+- font size
+- theme: light, dark or system
+
+All settings are persisted in `localStorage`.
 
 The document area is scrollable and rendered in read-only mode. When a file is loaded, the window title uses the current file name.
 
@@ -57,10 +64,10 @@ The application uses the native OS WebView (WebKitGTK on Linux, WebView2 on Wind
 
 | System | File | Link |
 |--------|------|------|
-| Windows (installer) | `.exe` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.0.0_x64-setup.exe) |
-| Windows (MSI) | `.msi` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.0.0_x64_en-US.msi) |
-| Linux (Debian/Ubuntu) | `.deb` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.0.0_amd64.deb) |
-| Linux (universal) | `.AppImage` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.0.0_amd64.AppImage) |
+| Windows (installer) | `.exe` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.1.0_x64-setup.exe) |
+| Windows (MSI) | `.msi` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.1.0_x64_en-US.msi) |
+| Linux (Debian/Ubuntu) | `.deb` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.1.0_amd64.deb) |
+| Linux (universal) | `.AppImage` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.1.0_amd64.AppImage) |
 
 ## Features
 
@@ -69,7 +76,9 @@ The application uses the native OS WebView (WebKitGTK on Linux, WebView2 on Wind
 - **OS file associations** - packaged app declares `.md`, `.markdown` and `.txt`
 - **File watcher** - automatic reload on external changes when a file path is available
 - **Zoom** - view scaling 50-200% persisted in `localStorage`
-- **Font selector** - switch document font without modifying content
+- **Font selector** - switch document font and size without modifying content
+- **Dark mode** - light, dark or system theme
+- **Clickable links** - open in the system default browser
 - **Task lists and tables** - render structured Markdown content in the viewer surface
 - **Cross-platform** - Windows (.exe, .msi) and Linux (.deb, .AppImage)
 - **Lightweight** - ~5-10 MB thanks to Tauri (native WebView)
@@ -115,9 +124,24 @@ On Linux, `.deb` and `.rpm` bundles may be produced even when the AppImage step 
 
 - Tauri 2.x (Rust backend + native WebView)
 - React 18 + Vite
-- TipTap 2 (ProseMirror) used as a read-only document surface
 - TailwindCSS 3
 - markdown-it + markdown-it-task-lists (Markdown to HTML rendering)
+- tauri-plugin-opener (opening links externally)
+
+## Changelog
+
+### 1.1.0
+
+- Renamed the application to **markdown-viewer** (binary, package and repository)
+- Links open in the system default browser
+- Faster loading: Markdown is rendered directly, TipTap removed, bundle split into chunks (~620 kB -> ~250 kB of JS)
+- File watcher ignores access events and debounces reloads
+- Dark mode and context-menu settings (zoom, font, font size, theme)
+- Removed startup debug log written to `/tmp`
+
+### 1.0.0
+
+- Initial read-only Markdown viewer
 
 ## License
 

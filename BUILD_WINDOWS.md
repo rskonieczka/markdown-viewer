@@ -50,10 +50,10 @@ cargo tauri build --bundles msi,nsis
 Pliki instalacyjne znajdziesz w:
 
 - **MSI (Windows Installer):**
-  `src-tauri/target/release/bundle/msi/markdown-viewer_1.0.0_x64_en-US.msi`
+  `src-tauri/target/release/bundle/msi/markdown-viewer_1.1.0_x64_en-US.msi`
 
 - **EXE (NSIS setup wizard):**
-  `src-tauri/target/release/bundle/nsis/markdown-viewer_1.0.0_x64-setup.exe`
+  `src-tauri/target/release/bundle/nsis/markdown-viewer_1.1.0_x64-setup.exe`
 
 ## Uwagi
 
