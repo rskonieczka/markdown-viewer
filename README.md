@@ -120,6 +120,10 @@ cargo tauri build
 
 On Linux, `.deb` and `.rpm` bundles may be produced even when the AppImage step fails later. If AppImage bundling stops at `linuxdeploy`, verify your AppImage tooling and Linux packaging dependencies before retrying the full bundle.
 
+### CI / Release
+
+Every push to `master` (except documentation-only changes) runs the **Build & Release** GitHub Actions workflow. It builds Linux (`.deb`, `.AppImage`) and Windows (`.msi`, `.exe`) packages and publishes them to the GitHub release `v<version>` taken from `package.json`. If that release already exists, its files are replaced with the new build. Bump the version to create a new release.
+
 ## Tech Stack
 
 - Tauri 2.x (Rust backend + native WebView)
