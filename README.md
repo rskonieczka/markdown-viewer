@@ -64,10 +64,10 @@ The application uses the native OS WebView (WebKitGTK on Linux, WebView2 on Wind
 
 | System | File | Link |
 |--------|------|------|
-| Windows (installer) | `.exe` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.1.0_x64-setup.exe) |
-| Windows (MSI) | `.msi` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.1.0_x64_en-US.msi) |
-| Linux (Debian/Ubuntu) | `.deb` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.1.0_amd64.deb) |
-| Linux (universal) | `.AppImage` | [Download](https://github.com/rskonieczka/markdown-viewer/releases/latest/download/markdown-viewer_1.1.0_amd64.AppImage) |
+| Windows (installer) | `.exe` | [Releases](https://github.com/rskonieczka/markdown-viewer/releases) |
+| Windows (MSI) | `.msi` | [Releases](https://github.com/rskonieczka/markdown-viewer/releases) |
+| Linux (Debian/Ubuntu) | `.deb` | [Releases](https://github.com/rskonieczka/markdown-viewer/releases) |
+| Linux (universal) | `.AppImage` | [Releases](https://github.com/rskonieczka/markdown-viewer/releases) |
 
 ## Features
 
