@@ -296,3 +296,14 @@ body {
 .tiptap a[href] {
   cursor: pointer;
 }
+
+.tiptap ul.contains-task-list {
+  list-style: none;
+  padding-left: 0.25em;
+}
+
+.tiptap li.task-list-item > input[type="checkbox"] {
+  margin: 0 0.5em 0 0;
+  vertical-align: middle;
+  pointer-events: none;
+}

@@ -1,55 +1,4 @@
 import React, { useCallback } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Link from "@tiptap/extension-link";
-import Table from "@tiptap/extension-table";
-import TableRow from "@tiptap/extension-table-row";
-import TableCell from "@tiptap/extension-table-cell";
-import TableHeader from "@tiptap/extension-table-header";
-import TaskList from "@tiptap/extension-task-list";
-import TaskItem from "@tiptap/extension-task-item";
-
-export function useMarkdownEditor({ initialContent }) {
-  const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3, 4, 5, 6],
-        },
-        codeBlock: {
-          HTMLAttributes: {
-            class: "code-block",
-          },
-        },
-      }),
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-        HTMLAttributes: {
-          rel: "noopener noreferrer",
-          target: "_blank",
-        },
-      }),
-      Table,
-      TableRow,
-      TableCell,
-      TableHeader,
-      TaskList,
-      TaskItem.configure({
-        nested: true,
-      }),
-    ],
-    content: initialContent || "",
-    editable: false,
-    editorProps: {
-      attributes: {
-        class: "tiptap",
-      },
-    },
-  });
-
-  return editor;
-}
 
 const EXTERNAL_LINK_RE = /^(https?:|mailto:|tel:)/i;
 
@@ -66,7 +15,7 @@ async function openExternal(url) {
   window.open(url, "_blank", "noopener,noreferrer");
 }
 
-export default function Editor({ editor, zoom = 100, fontFamily = "system-ui", fontSize = 16, onContextMenu }) {
+export default function Editor({ html, zoom = 100, fontFamily = "system-ui", fontSize = 16, onContextMenu }) {
   const scale = zoom / 100;
 
   const handleClick = useCallback((event) => {
@@ -90,16 +39,7 @@ export default function Editor({ editor, zoom = 100, fontFamily = "system-ui", f
           fontSize: `${fontSize}px`,
         }}
       >
-        {editor ? (
-          <EditorContent editor={editor} />
-        ) : (
-          <div className="p-8 space-y-4 animate-pulse">
-            <div className="h-8 rounded w-2/5 bg-[var(--color-neutral-muted)]" />
-            <div className="h-4 rounded w-full bg-[var(--color-neutral-muted)]" />
-            <div className="h-4 rounded w-4/5 bg-[var(--color-neutral-muted)]" />
-            <div className="h-4 rounded w-3/5 bg-[var(--color-neutral-muted)]" />
-          </div>
-        )}
+        <div className="tiptap" dangerouslySetInnerHTML={{ __html: html }} />
       </div>
     </div>
   );

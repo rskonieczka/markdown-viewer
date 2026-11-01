@@ -12,7 +12,6 @@ export default defineConfig(async () => ({
         manualChunks(id) {
           if (!id.includes("node_modules")) return undefined;
           if (/[\\/](react|react-dom|scheduler)[\\/]/.test(id)) return "react";
-          if (/[\\/](@tiptap|prosemirror-[^\\/]+)[\\/]/.test(id)) return "tiptap";
           if (/[\\/](markdown-it[^\\/]*|mdurl|linkify-it|uc\.micro|punycode\.js|entities)[\\/]/.test(id)) return "markdown";
           return undefined;
         },

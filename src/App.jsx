@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useEffect, useRef, useMemo } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import Toolbar from "./components/Toolbar";
-import Editor, { useMarkdownEditor } from "./components/Editor";
+import Editor from "./components/Editor";
 import MarkdownIt from "markdown-it";
 import markdownItTaskLists from "markdown-it-task-lists";
 
@@ -48,20 +48,7 @@ function applyTheme(theme) {
 }
 
 function markdownToHtml(markdown) {
-  let html = md.render(markdown || "");
-
-  html = html
-    .replace(/<ul class="contains-task-list">/g, '<ul data-type="taskList">')
-    .replace(
-      /<li class="task-list-item[^"]*">\s*(<p>)?\s*<input[^>]*checked[^>]*>\s*/g,
-      (_, p) => `<li data-type="taskItem" data-checked="true">${p || ""}`,
-    )
-    .replace(
-      /<li class="task-list-item[^"]*">\s*(<p>)?\s*<input[^>]*type="checkbox"[^>]*>\s*/g,
-      (_, p) => `<li data-type="taskItem" data-checked="false">${p || ""}`,
-    );
-
-  return html;
+  return md.render(markdown || "");
 }
 
 let isTauriAvailable = false;
@@ -112,8 +99,7 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      await tauriReady;
-      if (isTauriAvailable) {
+      if (window.__TAURI_INTERNALS__) {
         try {
           const { invoke } = await import("@tauri-apps/api/core");
           const data = await invoke("get_cli_file");
@@ -145,9 +131,8 @@ export default function App() {
 }
 
 function AppContent({ initialCliData, theme, onThemeChange }) {
-  const initialHtml = useMemo(
+  const [html, setHtml] = useState(
     () => (initialCliData ? markdownToHtml(initialCliData.content) : ""),
-    [initialCliData],
   );
 
   const currentFileName = initialCliData ? initialCliData.name : "";
@@ -168,18 +153,12 @@ function AppContent({ initialCliData, theme, onThemeChange }) {
   const [contextMenuPosition, setContextMenuPosition] = useState(null);
   const currentContentRef = useRef(initialCliData ? initialCliData.content : "");
 
-  const editor = useMarkdownEditor({
-    initialContent: initialHtml,
-  });
-
   const setEditorContent = useCallback(
     (markdownContent) => {
-      if (!editor) return;
-      const html = markdownToHtml(markdownContent);
-      editor.commands.setContent(html);
+      setHtml(markdownToHtml(markdownContent));
       currentContentRef.current = markdownContent;
     },
-    [editor],
+    [],
   );
 
   // --- Update window title ---
@@ -198,13 +177,15 @@ function AppContent({ initialCliData, theme, onThemeChange }) {
   // --- File watcher (auto-reload on external changes) ---
 
   useEffect(() => {
-    if (!isTauriAvailable || !tauriFs?.watchImmediate || !currentFilePath) return;
+    if (!window.__TAURI_INTERNALS__ || !currentFilePath) return;
 
     let unwatchFn = null;
     let cancelled = false;
     let reloadTimer = null;
 
     (async () => {
+      await tauriReady;
+      if (cancelled || !isTauriAvailable) return;
       try {
         unwatchFn = await tauriFs.watchImmediate(
           currentFilePath,
@@ -226,6 +207,7 @@ function AppContent({ initialCliData, theme, onThemeChange }) {
             }, 150);
           },
         );
+        if (cancelled) unwatchFn();
       } catch (err) {
         console.warn("File watch failed:", err);
       }
@@ -316,7 +298,7 @@ function AppContent({ initialCliData, theme, onThemeChange }) {
         />
       ) : null}
       <Editor
-        editor={editor}
+        html={html}
         zoom={zoom}
         fontFamily={fontFamily}
         fontSize={fontSize}
